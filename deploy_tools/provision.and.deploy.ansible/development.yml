@@ -1,0 +1,9 @@
+---
+# TODO: Maybe put a changed_when because it always shows changed.
+# TODO: "become" is badly used, should be task by task.
+- hosts: development
+  become: yes
+  vars:
+      host: "{{ inventory_hostname }}"
+  roles:
+    - deploy-development-machine

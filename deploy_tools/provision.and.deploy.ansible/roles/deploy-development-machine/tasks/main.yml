@@ -1,0 +1,68 @@
+---
+# This role prepares the development machine and does the steps necessary only
+# on them.
+- name: put the correct sources.development.list file
+  template: backup=yes
+            src=sources.development.list.j2
+            dest=/etc/apt/sources.list.d/sources.development.list
+
+- name: make sure required packages are installed
+  apt: force=yes pkg={{ item }} state=present
+  with_items: "{{ development_packages }}"
+
+#- name: install Python packages
+#  pip: name={{ item }} executable=pip3
+#  with_items: "{{ python_packages }}"
+
+- name: create the directory structure for running at_startup.sh with autostart 
+  file: path=/home/{{ project.user }}/.config/autostart state=directory 
+        mode=0755 owner={{ project.user }}
+
+- name: create bash_profile to run xfce after login
+  template: backup=yes
+            src=.bash_profile.j2
+            dest=/home/{{ project.user }}/.bash_profile
+            owner={{ project.user }}
+
+- name: create at_startup.sh to change the keyboard layout and run xterm at
+        startup
+  template: backup=yes
+            src=at_startup.sh.j2
+            dest={{ at_startup_sh_location }}
+            owner={{ project.user }}
+            mode=0500
+
+- name: create at_startup.desktop to been able to run at_startup.sh
+  template: backup=yes
+            src=at_startup.desktop.j2
+            dest=/home/{{ project.user }}/.config/autostart/at_startup.desktop
+            owner={{ project.user }}
+            mode=0500
+
+
+# # TODO: Review.
+# # gunicorn already has 80 port
+# - name: change apache port
+#   replace:
+#     dest=/etc/apache2/ports.conf
+#     regexp='Listen 80'
+#     replace='Listen 50779'
+
+# - name: enable public_html directory for php 
+#   template: backup=yes
+#             src=php5.conf.j2
+#             dest=/etc/apache2/mods-available/php5.conf
+#             mode=0644
+#             owner={{ project.user }}
+
+# - name: enable userdir for apache2
+#   apache2_module: state=present name=userdir
+
+# - name: create the public_html directory for the project.user
+#   file: path={{ public_html_dir }}
+#         state=directory mode=0755 owner={{ project.user }}
+
+# # TODO: ln from sites/tutorial.../source to public_html/tutorial...
+
+# - name: restart apache2 service to enable php and the user directories
+#   service: name=apache2 state=restarted enabled=yes

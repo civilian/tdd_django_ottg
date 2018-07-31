@@ -5,3 +5,6 @@ __pychache__
 *.pyc
 /static
 .vagrant
+ubuntu-bionic-18.04-cloudimg-console.log
+site.retry
+/deploy_tools/bitbucket

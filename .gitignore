@@ -3,3 +3,4 @@ geckodriver.log
 virtualenv
 __pychache__
 *.pyc
+/static

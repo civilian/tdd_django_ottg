@@ -4,3 +4,4 @@ virtualenv
 __pychache__
 *.pyc
 /static
+.vagrant

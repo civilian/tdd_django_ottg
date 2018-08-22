@@ -2,7 +2,10 @@ import random
 from fabric.contrib.files import append, exists
 from fabric.api import cd, env, local, run
 
-REPO_URL = 'git@bitbucket.org:civilian/tdd_django_ottg.git'
+REPO_URL = 'git@gitlab.com:civilian_link/tdd_django_ottg.git'
+
+# to run it
+# fab deploy -i .vagrant/machines/default/virtualbox/private_key -H vagrant@localhost:2222
 
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'

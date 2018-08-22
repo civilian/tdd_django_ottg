@@ -7,3 +7,4 @@
       host: "{{ inventory_hostname }}"
   roles:
     - deploy-development-machine
+    - provision-project-foundation

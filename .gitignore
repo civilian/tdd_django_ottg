@@ -10,3 +10,4 @@ site.retry
 /deploy_tools/bitbucket
 .env
 runonce
+.directory

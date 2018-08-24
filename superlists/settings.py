@@ -43,6 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lists',
+    'accounts',
+]
+
+AUTH_USER_MODEL = 'accounts.User'
+AUTHENTICATION_BACKENDS = [
+    'accounts.authentication.PasswordlessAuthenticationBackend',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +150,12 @@ LOGGING = {
     },
     'root': {'level': 'INFO'},
 }
+
+
+# Email variables
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '828ea5a5b92997'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+EMAIL_PORT = 25
+EMAIL_USE_TLS = True

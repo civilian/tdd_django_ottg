@@ -149,8 +149,8 @@ LOGGING = {
 
 # Email variables
 
-EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '828ea5a5b92997'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'civilian.tests@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True

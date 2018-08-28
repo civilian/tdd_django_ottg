@@ -19,19 +19,15 @@ class LoginTest(FunctionalTest):
             self.assertEqual(email.subject, subject)
             return email.body
 
-        print('wait_for_email')
         email_id = None
         start = time.time()
         inbox = poplib.POP3_SSL('pop.gmail.com')
-        print(inbox)
         try:
-            print('something')
             inbox.user(test_email)
             inbox.pass_(os.environ['YAHOO_PASSWORD'])
-            print(inbox)
             while time.time() - start < 60:
                 # get 10 newest messages
-                count, _ = inbox.start()
+                count, _ = inbox.stat()
                 for i in reversed(range(max(1, count - 10), count + 1)):
                     print('getting msg', i)
                     _, lines, __ = inbox.retr(i)
@@ -44,7 +40,7 @@ class LoginTest(FunctionalTest):
                 time.sleep(5)
         finally:
             if email_id:
-                inbox.delete(email_id)
+                inbox.dele(email_id)
             inbox.quit()
 
 
@@ -73,10 +69,12 @@ class LoginTest(FunctionalTest):
 
         # It has a url link in it
         self.assertIn('Use this link to log in', body)
-        url_search = re.search(r'http://.+/.+$', body)
+        url_search = re.search(r'http://(.+)/(.+)/(.+)$$', body)
         if not url_search:
             self.fail(f'Could not find url in email body:\n{body}')
-        url = url_search.group(0)
+
+        ## The normal url does not work with a port
+        url = f'{self.live_server_url}/{url_search.group(2)}/{url_search.group(3)}'
         self.assertIn(self.live_server_url, url)
 
         # She clicks it

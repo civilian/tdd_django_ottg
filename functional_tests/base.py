@@ -7,6 +7,8 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
+from .server_tools import reset_database
+
 MAX_WAIT = 10
 
 class FunctionalTest(StaticLiveServerTestCase):
@@ -16,6 +18,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.staging_server = os.environ.get('STAGING_SERVER')
         if self.staging_server:
             self.live_server_url = 'http://' + self.staging_server
+            reset_database(self.staging_server)
 
     def tearDown(self):
         self.browser.quit()
@@ -56,6 +59,6 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     @wait
     def wait_to_be_logged_out(self, email):
-        lambda: self.browser.find_element_by_name('email')
+        self.browser.find_element_by_name('email')
         navbar = self.browser.find_element_by_css_selector('.navbar')
         self.assertNotIn(email, navbar.text)

@@ -6,6 +6,11 @@
             src=sources.development.list.j2
             dest=/etc/apt/sources.list.d/sources.development.list
 
+- name: add an apt key for jenkins
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: 9B7D32F2D50582E6
+
 - name: make sure required packages are installed
   apt: force=yes pkg={{ item }} state=present
   with_items: "{{ development_packages }}"
@@ -14,8 +19,8 @@
 #  pip: name={{ item }} executable=pip3
 #  with_items: "{{ python_packages }}"
 
-- name: create the directory structure for running at_startup.sh with autostart 
-  file: path=/home/{{ project.user }}/.config/autostart state=directory 
+- name: create the directory structure for running at_startup.sh with autostart
+  file: path=/home/{{ project.user }}/.config/autostart state=directory
         mode=0755 owner={{ project.user }}
 
 - name: create bash_profile to run xfce after login
@@ -48,7 +53,7 @@
 #     regexp='Listen 80'
 #     replace='Listen 50779'
 
-# - name: enable public_html directory for php 
+# - name: enable public_html directory for php
 #   template: backup=yes
 #             src=php5.conf.j2
 #             dest=/etc/apache2/mods-available/php5.conf

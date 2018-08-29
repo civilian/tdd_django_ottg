@@ -17,8 +17,15 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.browser = webdriver.Firefox()
         self.staging_server = os.environ.get('STAGING_SERVER')
         if self.staging_server:
-            self.live_server_url = 'http://' + self.staging_server
-            reset_database(self.staging_server)
+            self.staging_port = os.environ.get('STAGING_PORT')
+            if self.staging_port:
+                self.live_server_url = f'http://{self.staging_server}:{self.staging_port}'
+                self.staging_ssh_port = os.environ.get('STAGING_SSH_PORT')
+                self.staging_ssh_private_key = os.environ.get('STAGING_SSH_PRIVATE_KEY')
+                reset_database(self.staging_server, self.staging_ssh_port, self.staging_ssh_private_key)
+            else:
+                self.live_server_url = 'http://' + self.staging_server
+                reset_database(self.staging_server)
 
     def tearDown(self):
         self.browser.quit()

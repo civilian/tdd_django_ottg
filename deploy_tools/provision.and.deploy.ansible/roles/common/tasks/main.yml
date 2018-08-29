@@ -6,8 +6,8 @@
 - name: create common user for all the servers
   become: yes
   user: name={{ project.user }} shell=/bin/bash createhome=yes
-        home=/home/{{ project.user }} 
-        password={{ project.user |password_hash('sha512') }}
+        home=/home/{{ project.user }}
+        password={{ project.user | password_hash('sha512') }}
         groups="sudo"
         comment="common user for all the servers"
 
@@ -44,4 +44,3 @@
     dest=~/.bashrc
     regexp='\#alias l'
     replace='alias l'
-

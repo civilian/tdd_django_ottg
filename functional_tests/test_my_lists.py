@@ -8,7 +8,16 @@ class MyListsTests(FunctionalTest):
 
     def create_pre_authenticated_session(self, email):
         if self.staging_server:
-            session_key = create_session_on_server(self.staging_server, email)
+            if self.staging_port:
+                session_key = create_session_on_server(
+                                self.staging_server, email,
+                                self.staging_ssh_port,
+                                self.staging_ssh_private_key
+                            )
+            else:
+                session_key = create_session_on_server(self.staging_server, email)
+
+
         else:
             session_key = create_pre_authenticated_session(email)
 

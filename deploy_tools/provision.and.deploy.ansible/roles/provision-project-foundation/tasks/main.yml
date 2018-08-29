@@ -1,0 +1,17 @@
+---
+- name: create the directory structure for the ssh config
+  file: path=/home/{{ project.user }}/.ssh/ state=directory
+        mode=0755 owner={{ project.user }}
+
+- name: create the config for ssh for github gitlab and bitbucket
+  template: backup=yes
+            src=ssh_config
+            dest=/home/{{ project.user }}/.ssh/config
+            owner={{ project.user }}
+            mode=0664
+
+- name: set authorized key from this machine took from file
+  authorized_key:
+    user={{ project.user }}
+    state=present
+    key="{{ lookup('file', '/home/civilian/.ssh/id_rsa.pub') }}"

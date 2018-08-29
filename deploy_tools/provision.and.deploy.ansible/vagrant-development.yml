@@ -6,4 +6,6 @@
   vars:
       host: "{{ inventory_hostname }}"
   roles:
-    - deploy-development-machine
+    - deploy-vagrant-development-machine
+    - provision-project-foundation
+    - provision-superlists

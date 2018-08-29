@@ -10,8 +10,12 @@
             owner={{ project.user }}
             mode=0664
 
-- name: set authorized key from this machine took from file
+- name: get the username running the deploy
+  local_action: command whoami
+  register: username_on_the_host
+
+- name: add the public key from this machine to the machine we are provisioning
   authorized_key:
     user={{ project.user }}
     state=present
-    key="{{ lookup('file', '/home/civilian/.ssh/id_rsa.pub') }}"
+    key="{{ lookup('file', '/home/{{ username_on_the_host.stdout_lines[0] }}/.ssh/id_rsa.pub') }}"

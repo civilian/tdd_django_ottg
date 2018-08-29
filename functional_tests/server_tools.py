@@ -35,7 +35,7 @@ def create_session_on_server(
         host_string=f'vagrant@{host}:{staging_ssh_port}',
         private_key_filename=staging_ssh_private_key
         ):
-            _create_session_on_server(host, email)
+            return _create_session_on_server(host, email)
     else:
         with settings(host_string=f'vagrant@{host}'):
-            _create_session_on_server(host, email)
+            return _create_session_on_server(host, email)

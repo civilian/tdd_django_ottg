@@ -1,11 +1,17 @@
 ---
 # TODO: Maybe put a changed_when because it always shows changed.
-# TODO: "become" is badly used, should be task by task.
+# TODO: "become" is badly used, should be task by task
+
+- hosts: development
+  vars:
+      host: "{{ inventory_hostname }}"
+  roles:
+    - provision-project-foundation
+
 - hosts: development
   become: yes
   vars:
       host: "{{ inventory_hostname }}"
   roles:
     - deploy-vagrant-development-machine
-    - provision-project-foundation
     - provision-superlists

@@ -31,3 +31,9 @@ def new_list(request):
         list_ = form.save(owner=request.user)
         return redirect(list_)
     return render(request, 'home.html', {'form': form})
+
+
+def share_list(request, list_id):
+    list_ = List.objects.get(id=list_id)
+    list_.shared_with.add(request.POST['sharee'])
+    return redirect(list_)

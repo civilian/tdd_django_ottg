@@ -20,7 +20,7 @@ class SharingTest(FunctionalTest):
         oni_browser = webdriver.Firefox()
         self.addCleanup(lambda: quit_if_possible(oni_browser))
         self.browser = oni_browser
-        self.create_pre_authenticated_session('Oniciferous@example.com')
+        self.create_pre_authenticated_session('oniciferous@example.com')
 
         # Edith goes to the home page and starts a list
         self.browser = edith_browser

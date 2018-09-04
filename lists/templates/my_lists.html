@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block header_text %}My lists{% endblock %}
+{% block header_text %}My Lists{% endblock %}
 
 {% block list_form %}{% endblock %}
 
@@ -8,6 +8,12 @@
   <h2>{{ owner.email }}'s lists</h2>
   <ul>
     {% for list in owner.list_set.all %}
+      <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
+    {% endfor %}
+  </ul>
+  <h2>lists shared with {{ owner.email }}</h2>
+  <ul>
+    {% for list in owner.shared_with.all %}
       <li><a href="{{ list.get_absolute_url }}">{{ list.name }}</a></li>
     {% endfor %}
   </ul>

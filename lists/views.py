@@ -1,3 +1,4 @@
+from django.views.generic import FormView
 from django.core.exceptions import ValidationError
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
@@ -6,8 +7,9 @@ User = get_user_model()
 from lists.forms import ExistingListItemForm, ItemForm, NewListForm
 from lists.models import Item, List
 
-def home_page(request):
-    return render(request, 'home.html', {'form': ItemForm()})
+class HomePageView(FormView):
+    template_name = 'home.html'
+    form_class = ItemForm
 
 def view_list(request, list_id):
     list_ = List.objects.get(id=list_id)

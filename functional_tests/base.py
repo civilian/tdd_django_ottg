@@ -119,7 +119,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.wait_for_row_in_list_table(f'{item_number}: {item_text}')
 
     @wait
-    def wait_for_row_in_list_table(self, item_text, item_numer):
+    def wait_for_row_in_list_table(self, row_text):
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
         self.assertIn(row_text, [row.text for row in rows])

@@ -1,2 +1,4 @@
+django==1.11.13
+gunicorn
 selenium
 fabric3

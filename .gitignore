@@ -12,6 +12,6 @@ site.retry
 .env
 runonce
 .directory
-deploy_tools/provision.and.deploy.ansible/roles/provision-project-foundation/templates/bitbucket
+deploy_tools/provision.and.deploy.ansible/templates/*
 functional_tests/screendumps
 .vscode

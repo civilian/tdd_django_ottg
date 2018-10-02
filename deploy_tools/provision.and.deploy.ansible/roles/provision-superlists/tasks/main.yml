@@ -1,10 +1,12 @@
 ---
 - name: Deadsnakes PPA to get Python 3.6
+  become: yes
   apt_repository:
     repo='ppa:deadsnakes/ppa'
 
 - name: make sure required packages are installed
-  apt: pkg=nginx,git,python3.6,python3.6-venv state=present
+  become: yes
+  apt: pkg=nginx,git,python3.6,python3.6-venv,python3-venv state=present
 
 - name: allow long hostnames in nginx
   lineinfile:

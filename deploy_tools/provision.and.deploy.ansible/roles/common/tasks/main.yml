@@ -11,12 +11,6 @@
         groups="sudo"
         comment="common user for all the servers"
 
-# TODO: Review those sources for more security
-# - name: Put the correct sources.list file
-#   template: backup=yes
-#             src=sources.list.j2
-#             dest=/etc/apt/sources.list
-
 - name: Check if vim is already installed.
   stat: path=/usr/bin/vim
   register: vim_installed
@@ -41,6 +35,6 @@
 
 - name: Add alias 'l' for ls
   replace:
-    dest=~/.bashrc
-    regexp='\#alias l'
-    replace='alias l'
+    dest: '/home/{{ project.user }}/.bashrc'
+    regexp: '\#alias l'
+    replace: 'alias l'

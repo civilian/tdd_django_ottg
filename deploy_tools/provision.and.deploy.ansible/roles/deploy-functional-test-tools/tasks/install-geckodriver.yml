@@ -1,0 +1,28 @@
+---
+
+- name: create the directory structure for not downloading installers more than once
+  file: path=/home/{{ project.user }}/installers/ state=directory
+        mode=0755 owner={{ project.user }}
+
+# TODO: check the last version of geckodriver
+- name: download and check that is the original geckodriver
+  get_url:
+    url: https://github.com/mozilla/geckodriver/releases/download/v0.22.0/geckodriver-v0.22.0-linux64.tar.gz
+    dest: /home/{{ project.user }}/installers/
+    checksum: sha256:9d80799bff034eda2a233493a78e3250b7c6118c9010ec37a871783081963fda
+
+
+- name: extract geckodriver
+  become: yes
+  unarchive:
+    src: /home/{{ project.user }}/installers/geckodriver-v0.22.0-linux64.tar.gz
+    dest: /usr/local/bin/
+    remote_src: yes
+    owner: "{{ project.user }}"
+
+- name: extract geckodriver 
+  file:
+    path: /usr/local/bin/geckodriver
+    owner: "{{ project.user }}"
+    mode: 0775
+

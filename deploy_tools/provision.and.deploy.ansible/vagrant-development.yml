@@ -6,12 +6,7 @@
   vars:
       host: "{{ inventory_hostname }}"
   roles:
-    - provision-project-foundation
-
-- hosts: development
-  become: yes
-  vars:
-      host: "{{ inventory_hostname }}"
-  roles:
-    - deploy-vagrant-development-machine
+    - provision-projects-ssh-keys
+    - deploy-functional-test-tools
+    - deploy-xserver-for-development-machine
     - provision-superlists

@@ -5,7 +5,7 @@ This is repository following the book: http://www.obeythetestinggoat.com/book/pr
 ## Quick Start / Installation
 
 ```sh
-$ pip install --upgrade virtualenv
+$ python3.6 -m  pip install --upgrade virtualenv
 $ virtualenv -p /usr/bin/python3.6 venv
 $ source venv/bin/activate
 (venv) $ pip install -r test-requirements.txt

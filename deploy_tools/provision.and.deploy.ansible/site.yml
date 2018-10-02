@@ -5,12 +5,11 @@
 # it should not be used this way in real production; where it should be used
 # task by task.
 - hosts: all
-  become: yes
   vars:
       host: "{{ inventory_hostname }}"
   roles:
     - common
 
 #- include: provision.yml
-- include: vagrant-development.yml
+- import_playbook: vagrant-development.yml
 #- include: deploy.yml

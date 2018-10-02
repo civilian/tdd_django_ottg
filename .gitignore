@@ -14,3 +14,4 @@ runonce
 .directory
 deploy_tools/provision.and.deploy.ansible/roles/provision-project-foundation/templates/bitbucket
 functional_tests/screendumps
+.vscode

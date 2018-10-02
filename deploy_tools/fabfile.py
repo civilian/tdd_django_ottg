@@ -4,7 +4,7 @@ import os
 from fabric.contrib.files import append, exists
 from fabric.api import cd, env, local, run
 
-REPO_URL = 'git@bitbucket.org:civilian/tdd_django_ottg.git'
+REPO_URL = 'git@github.com:civilian/tdd_django_ottg.git'
 
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'

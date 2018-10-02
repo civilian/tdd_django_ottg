@@ -1,0 +1,7 @@
+---
+
+- include_tasks: install-geckodriver.yml
+
+- name: install firefox
+  become: yes
+  apt: pkg=firefox state=present

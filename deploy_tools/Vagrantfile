@@ -10,7 +10,7 @@ Vagrant.configure(2) do |config|
     config.vm.network "forwarded_port", guest: 80, host: superlists_port
     config.vm.network "forwarded_port", guest: 8000, host: 50777
 
-    config.vm.hostname = 'host'
+    config.vm.hostname = 'guest'
 
     config.vm.synced_folder "../", "/vagrant"
 

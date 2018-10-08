@@ -1,14 +1,14 @@
 server {
-    listen 80;
-    server_name {{ host }};
+    listen {{ project_port }};
+    server_name {{ project_name }};
 
     location /static {
-        alias /home/{{ project.user }}/sites/{{ host }}/static;
+        alias /home/{{ project.user }}/sites/{{ project_name }}/static;
     }
 
     location / {
         proxy_set_header Host {{ host }};
-        proxy_pass http://unix:/tmp/{{ host }}.socket;
+        proxy_pass http://unix:/tmp/{{ project_name }}.socket;
 
     }
 }

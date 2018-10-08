@@ -7,8 +7,7 @@ Vagrant.configure(2) do |config|
     config.vm.box = 'ubuntu/bionic64'
 
     superlists_port = 50776
-    config.vm.network "forwarded_port", guest: 80, host: superlists_port
-    config.vm.network "forwarded_port", guest: 8000, host: 50777
+    config.vm.network "forwarded_port", guest: superlists_port, host: superlists_port
 
     config.vm.hostname = 'guest'
 

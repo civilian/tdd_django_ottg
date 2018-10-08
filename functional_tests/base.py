@@ -30,22 +30,30 @@ def wait(fn):
                 time.sleep(0.5)
     return modified_fn
 
+class StagingServer(object):
+
+    def __init__(self, staging_server, staging_ssh_port=None, staging_ssh_private_key=None):
+        self.server = staging_server
+        self.ssh_port = staging_ssh_port
+        self.ssh_private_key = staging_ssh_private_key
 
 class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
-        self.staging_server = os.environ.get('STAGING_SERVER')
+        self.staging_server = StagingServer(os.environ.get('STAGING_SERVER'))
         if self.staging_server:
+            self.project_name = os.environ.get('PROJECT_NAME')
             self.staging_port = os.environ.get('STAGING_PORT')
             if self.staging_port:
-                self.live_server_url = f'http://{self.staging_server}:{self.staging_port}'
-                self.staging_ssh_port = os.environ.get('STAGING_SSH_PORT')
-                self.staging_ssh_private_key = os.environ.get('STAGING_SSH_PRIVATE_KEY')
-                reset_database(self.staging_server, self.staging_ssh_port, self.staging_ssh_private_key)
+                self.live_server_url = f'http://{self.staging_server.server}:{self.staging_port}'
+                self.staging_server = StagingServer(os.environ.get('STAGING_SERVER'),
+                                                    os.environ.get('STAGING_SSH_PORT'),
+                                                    os.environ.get('STAGING_SSH_PRIVATE_KEY'))
+                reset_database(self.project_name, self.staging_server)
             else:
-                self.live_server_url = 'http://' + self.staging_server
-                reset_database(self.staging_server)
+                self.live_server_url = 'http://' + self.staging_server.server
+                reset_database(self.project_name, self.staging_server)
 
     def tearDown(self):
         if self._test_has_failed():
@@ -126,14 +134,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     def create_pre_authenticated_session(self, email):
         if self.staging_server:
-            if self.staging_port:
-                session_key = create_session_on_server(
-                                self.staging_server, email,
-                                self.staging_ssh_port,
-                                self.staging_ssh_private_key
-                            )
-            else:
-                session_key = create_session_on_server(self.staging_server, email)
+            session_key = create_session_on_server(self.staging_server, self.project_name, email)
         else:
             session_key = create_pre_authenticated_session(email)
 

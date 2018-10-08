@@ -1,9 +1,6 @@
 ---
 # This is kept as simple as possible for mock-ups development
 
-# TODO: "become" for root is used in a simplified way to make easy the deploy but
-# it should not be used this way in real production; where it should be used
-# task by task.
 - hosts: all
   vars:
       host: "{{ inventory_hostname }}"

@@ -85,7 +85,7 @@
 - name: restart gunicorn
   become: yes
   systemd:
-    name=gunicorn-{{ host }}
+    name=gunicorn-{{ project_name }}
     daemon_reload=yes
     enabled=yes
     state=restarted

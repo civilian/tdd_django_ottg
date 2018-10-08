@@ -7,12 +7,21 @@
   roles:
     - deploy-xserver-for-development-machine
     - provision-projects-ssh-keys
-    - provision-tdd_django_ottg
-    - deploy-tdd_django_ottg
+    # If you don't want more than one project per machine just put the project name
+    # to the url of the project
+    - role: provision-tdd_django_ottg
+      project_port: 50776
+      project_ssh_port: 2222
+      project_name: localhost
+      repository: git@github.com:civilian/tdd_django_ottg.git
+    - role: deploy-tdd_django_ottg
+      project_name: localhost
+      repository: git@github.com:civilian/tdd_django_ottg.git
 
 - hosts: development
   vars:
       host: "{{ inventory_hostname }}"
   roles:
     - deploy-functional-test-tools
-    - deploy-tdd_django_ottg-to-run-tests
+    - role: deploy-tdd_django_ottg-to-run-tests
+      project_name: localhost

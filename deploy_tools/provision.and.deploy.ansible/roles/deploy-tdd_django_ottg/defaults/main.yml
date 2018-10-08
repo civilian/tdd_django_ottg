@@ -1,0 +1,3 @@
+---
+site_folder: /home/{{ project.user }}/sites/{{ host }}
+repository: git@github.com:civilian/tdd_django_ottg.git

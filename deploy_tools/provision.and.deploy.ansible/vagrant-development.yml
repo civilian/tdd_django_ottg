@@ -1,12 +1,18 @@
 ---
 # TODO: Maybe put a changed_when because it always shows changed.
-# TODO: "become" is badly used, should be task by task
 
 - hosts: development
   vars:
       host: "{{ inventory_hostname }}"
   roles:
-    - provision-projects-ssh-keys
-    - deploy-functional-test-tools
     - deploy-xserver-for-development-machine
-    - provision-superlists
+    - provision-projects-ssh-keys
+    - provision-tdd_django_ottg
+    - deploy-tdd_django_ottg
+
+- hosts: development
+  vars:
+      host: "{{ inventory_hostname }}"
+  roles:
+    - deploy-functional-test-tools
+    - deploy-tdd_django_ottg-to-run-tests

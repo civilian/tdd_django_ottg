@@ -1,8 +1,9 @@
 from fabric.api import run
 from fabric.context_managers import settings, shell_env
 
+# TODO: Change the host to put the direction
 def _get_manage_dot_py(host):
-    return f'~/sites/{host}/virtualenv/bin/python ~/sites/{host}/manage.py'
+    return f'~/sites/{host}/venv/bin/python ~/sites/{host}/manage.py'
 
 def reset_database(host, staging_ssh_port=None, staging_ssh_private_key=None):
     manage_dot_py = _get_manage_dot_py(host)

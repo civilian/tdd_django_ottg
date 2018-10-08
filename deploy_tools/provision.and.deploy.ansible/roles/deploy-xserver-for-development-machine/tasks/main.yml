@@ -3,6 +3,7 @@
 # on them.
 
 - name: make sure required packages are installed
+  become: yes
   apt: force=yes pkg={{ item }} state=present
   with_items: "{{ development_packages }}"
 

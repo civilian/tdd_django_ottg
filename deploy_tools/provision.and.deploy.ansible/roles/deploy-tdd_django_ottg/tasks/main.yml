@@ -1,0 +1,92 @@
+---
+
+- name: create the directory structure for tdd_django_ottg
+  file: path={{ site_folder }} state=directory
+        mode=0755 owner={{ project.user }}
+
+- name: capturing the current local commit
+  local_action: command git log -n 1 --format=%H
+  register: current_local_commit
+  changed_when: false
+
+- name: pulling the repository
+  git:
+    repo: '{{ repository }}'
+    dest: '{{ site_folder }}'
+    version: '{{ current_local_commit.stdout }}'
+
+- name: install requirements and create virtualenv
+  pip: 
+    requirements: '{{ site_folder }}/requirements.txt'
+    virtualenv: '{{ site_folder }}/venv'
+    virtualenv_python: python3.6
+  # become: yes
+  # notify:
+  #   - restart gunicorn
+
+- name: create .env file with basic
+  template: 
+    backup: no
+    src: .env.j2
+    dest: '{{ site_folder }}/.env'
+    owner: '{{ project.user }}'
+
+- name: Check if DJANGO_SECRET_KEY exists in .env
+  command: grep "DJANGO_SECRET_KEY" {{ site_folder }}/.env
+  register: test_django_secret_key
+  failed_when: "test_django_secret_key.rc == 2"
+  changed_when: false
+
+- name: generate the django secret key
+  script: generate_django_secret_key.py
+  args:
+    executable: python3.6
+    creates: .django_secret_key
+  when: test_django_secret_key.stdout == ""
+
+- name: get django SECRET_KEY from the generated file
+  command: "cat .django_secret_key"
+  register: secret_key
+  when: test_django_secret_key.stdout == ""
+
+- name: add DJANGO_SECRET_KEY to .env file
+  lineinfile: 
+      dest: '{{ site_folder }}/.env'
+      line: "DJANGO_SECRET_KEY={{ secret_key.stdout }}"
+  when: test_django_secret_key.stdout == ""
+  # become: yes
+  # notify:
+  #   - restart gunicorn
+
+- name: update django static files
+  django_manage:
+    command: collectstatic
+    app_path: "{{ site_folder }}"
+    virtualenv: "{{ site_folder }}/venv"
+  # become: yes
+  # notify:
+  #   - restart nginx
+
+- name: update django database
+  django_manage:
+    command:  migrate
+    app_path: "{{ site_folder }}"
+    virtualenv: "{{ site_folder }}/venv"
+  # become: yes
+  # notify:
+  #   - restart gunicorn
+
+# TODO: this should be a handler but it does not work
+- name: restart nginx
+  become: yes
+  service:  name=nginx state=restarted
+  changed_when: false
+
+- name: restart gunicorn
+  become: yes
+  systemd:
+    name=gunicorn-{{ host }}
+    daemon_reload=yes
+    enabled=yes
+    state=restarted
+  changed_when: false

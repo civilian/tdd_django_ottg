@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 
-from .server_tools import reset_database
+from .server_tools import reset_database, create_session_on_server
 from .management.commands.create_session import create_pre_authenticated_session
 
 MAX_WAIT = 10

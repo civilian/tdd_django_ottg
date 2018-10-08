@@ -1,0 +1,6 @@
+---
+- name: install test requirements and create virtualenv
+  pip: 
+    requirements: '{{ site_folder }}/test-requirements.txt'
+    virtualenv: '{{ site_folder }}/venv'
+    virtualenv_python: python3.6

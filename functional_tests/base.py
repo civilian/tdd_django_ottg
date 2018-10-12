@@ -42,7 +42,7 @@ class FunctionalTest(StaticLiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.staging_server = StagingServer(os.environ.get('STAGING_SERVER'))
-        if self.staging_server:
+        if self.staging_server.server:
             self.project_name = os.environ.get('PROJECT_NAME')
             self.staging_port = os.environ.get('STAGING_PORT')
             if self.staging_port:
@@ -133,7 +133,7 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.assertIn(row_text, [row.text for row in rows])
 
     def create_pre_authenticated_session(self, email):
-        if self.staging_server:
+        if self.staging_server.server:
             session_key = create_session_on_server(self.staging_server, self.project_name, email)
         else:
             session_key = create_pre_authenticated_session(email)

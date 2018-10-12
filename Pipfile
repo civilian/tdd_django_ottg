@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[dev-packages]
+selenium = "*"
+"fabric3" = "*"
+pylint = "*"
+
+[packages]
+gunicorn = "==19.9.0"
+Django = "==1.11.15"
+
+[requires]
+python_version = "3.6"

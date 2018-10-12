@@ -27,16 +27,8 @@
 - name: Check if DJANGO_SECRET_KEY exists in .env
   command: grep DJANGO_SECRET_KEY {{ site_folder }}/.env
   register: test_django_secret_key
-  failed_when: test_django_secret_key.rc == 2
+  failed_when: false
   changed_when: false
-
-- name: create .env file with basic
-  template: 
-    backup: no
-    src: .env.j2
-    dest: '{{ site_folder }}/.env'
-    owner: '{{ project.user }}'
-  when: test_django_secret_key.stdout == ""
 
 - name: generate the django secret key
   script: generate_django_secret_key.py
@@ -50,14 +42,19 @@
   register: secret_key
   when: test_django_secret_key.stdout == ""
 
-- name: add DJANGO_SECRET_KEY to .env file
-  lineinfile: 
-      dest: '{{ site_folder }}/.env'
-      line: "DJANGO_SECRET_KEY={{ secret_key.stdout }}"
+- name: eliminate the file of the django secret key
+  file:
+    state: absent
+    path: .django_secret_key
   when: test_django_secret_key.stdout == ""
-  # become: yes
-  # notify:
-  #   - restart gunicorn
+
+- name: create .env file including django secret key
+  template: 
+    backup: no
+    src: .env.j2
+    dest: '{{ site_folder }}/.env'
+    owner: '{{ project.user }}'
+  when: test_django_secret_key.stdout == ""
 
 - name: update django static files
   django_manage:

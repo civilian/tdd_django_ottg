@@ -1,4 +1,0 @@
-django==1.11.15
-gunicorn
-selenium
-fabric3

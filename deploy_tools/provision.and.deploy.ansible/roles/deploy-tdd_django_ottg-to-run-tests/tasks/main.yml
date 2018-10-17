@@ -1,6 +1,8 @@
 ---
-- name: install test requirements and create virtualenv
-  pip: 
-    requirements: '{{ site_folder }}/test-requirements.txt'
-    virtualenv: '{{ site_folder }}/venv'
-    virtualenv_python: python3.6
+- name: install requirements and test requirements with pipenv
+  environment:
+    LC_ALL: "C.UTF-8"
+    LANG: "en_GB.UTF-8"
+  command: "pipenv --bare install --dev"
+  args:
+    chdir: "{{ site_folder }}"

@@ -15,6 +15,17 @@
     dest: '{{ site_folder }}'
     version: '{{ current_local_commit.stdout }}'
 
+- name: install pipenv
+  become: yes
+  command: "python3 -m pip install pipenv"
+  changed_when: false
+
+- name: create requirements.txt from Pipfile
+  script: create_requirements_file.sh
+  args:
+    chdir: "{{ site_folder }}"
+    creates: "{{ site_folder }}/requirements.txt"
+
 - name: install requirements and create virtualenv
   pip: 
     requirements: '{{ site_folder }}/requirements.txt'

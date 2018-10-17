@@ -35,9 +35,8 @@
 - name: installing the packages for all the hosts
   become: yes
   apt: 
-    pkg: '{{ item }}' 
+    pkg: '{{ all_packages }}' 
     state: present
-  with_items: "{{ all_packages }}"
 
 - name: Remove password authentication from ssh
   become: yes

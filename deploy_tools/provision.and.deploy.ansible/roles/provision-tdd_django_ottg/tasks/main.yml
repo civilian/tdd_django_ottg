@@ -6,7 +6,9 @@
 
 - name: make sure required packages are installed
   become: yes
-  apt: pkg=nginx,git,python3.6,python3.6-venv,python3-venv,python3-pip,virtualenv state=present
+  apt: 
+    pkg: '{{ provision_packages }}'
+    state: present
 
 - name: allow long hostnames in nginx
   become: yes

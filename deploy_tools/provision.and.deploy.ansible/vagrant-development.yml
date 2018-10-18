@@ -13,7 +13,6 @@
       project_port: 50776
       project_ssh_port: 2222
       project_name: localhost
-      repository: git@github.com:civilian/tdd_django_ottg.git
     - role: deploy-tdd_django_ottg
       project_ssh_port: 2222
       project_name: localhost

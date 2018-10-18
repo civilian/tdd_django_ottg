@@ -24,7 +24,6 @@
   script: create_requirements_file.sh
   args:
     chdir: "{{ site_folder }}"
-    creates: "{{ site_folder }}/requirements.txt"
 
 - name: install requirements and create virtualenv
   pip: 

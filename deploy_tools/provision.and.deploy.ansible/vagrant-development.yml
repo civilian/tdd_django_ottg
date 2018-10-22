@@ -9,11 +9,11 @@
     - provision-projects-ssh-keys
     # If you don't want more than one project per machine just put the project name
     # to the url of the project
-    - role: provision-tdd_django_ottg
+    - role: provision-django-project
       project_port: 50776
       project_ssh_port: 2222
       project_name: localhost
-    - role: deploy-tdd_django_ottg
+    - role: deploy-django-project
       project_ssh_port: 2222
       project_name: localhost
       repository: git@github.com:civilian/tdd_django_ottg.git
@@ -23,5 +23,5 @@
       host: "{{ inventory_hostname }}"
   roles:
     - deploy-functional-test-tools
-    - role: deploy-tdd_django_ottg-to-run-tests
+    - role: deploy-django-project-to-run-tests
       project_name: localhost

@@ -5,4 +5,4 @@
     LANG: "en_GB.UTF-8"
   command: "pipenv --bare install --dev"
   args:
-    chdir: "{{ site_folder }}"
+    chdir: "{{ project_root }}"

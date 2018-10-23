@@ -1,7 +1,7 @@
 ---
 
 - name: create the directory structure for tdd_django_ottg
-  file: path={{ site_folder }} state=directory
+  file: path={{ project_root }} state=directory
         mode=0755 owner={{ project.user }}
 
 - name: capturing the current local commit
@@ -12,7 +12,7 @@
 - name: pulling the repository
   git:
     repo: '{{ repository }}'
-    dest: '{{ site_folder }}'
+    dest: '{{ project_root }}'
     version: '{{ current_local_commit.stdout }}'
 
 - name: install pipenv
@@ -23,19 +23,19 @@
 - name: create requirements.txt from Pipfile
   script: create_requirements_file.sh
   args:
-    chdir: "{{ site_folder }}"
+    chdir: "{{ project_root }}"
 
 - name: install requirements and create virtualenv
   pip: 
-    requirements: '{{ site_folder }}/requirements.txt'
-    virtualenv: '{{ site_folder }}/venv'
+    requirements: '{{ project_root }}/requirements.txt'
+    virtualenv: '{{ project_root }}/venv'
     virtualenv_python: python3.6
   # become: yes
   # notify:
   #   - restart gunicorn
 
 - name: Check if DJANGO_SECRET_KEY exists in .env
-  command: grep DJANGO_SECRET_KEY {{ site_folder }}/.env
+  command: grep DJANGO_SECRET_KEY {{ project_root }}/.env
   register: test_django_secret_key
   failed_when: false
   changed_when: false
@@ -62,15 +62,15 @@
   template: 
     backup: no
     src: .env.j2
-    dest: '{{ site_folder }}/.env'
+    dest: '{{ project_root }}/.env'
     owner: '{{ project.user }}'
   when: test_django_secret_key.stdout == ""
 
 - name: update django static files
   django_manage:
     command: collectstatic
-    app_path: "{{ site_folder }}"
-    virtualenv: "{{ site_folder }}/venv"
+    app_path: "{{ project_root }}"
+    virtualenv: "{{ project_root }}/venv"
   # become: yes
   # notify:
   #   - restart nginx
@@ -78,8 +78,8 @@
 - name: update django database
   django_manage:
     command:  migrate
-    app_path: "{{ site_folder }}"
-    virtualenv: "{{ site_folder }}/venv"
+    app_path: "{{ project_root }}"
+    virtualenv: "{{ project_root }}/venv"
   # become: yes
   # notify:
   #   - restart gunicorn

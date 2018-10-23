@@ -1,2 +1,2 @@
 ---
-site_folder: /home/{{ project.user }}/sites/{{ project_name }}
+project_root: /home/{{ project.user }}/sites/{{ project_name }}
